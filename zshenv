@@ -121,8 +121,3 @@ for email_file in ${email_files}; do
     export EMAIL=$(cat "$email_file")
     break
 done
-
-# gitの設定
-## メールアドレスを設定
-export GIT_AUTHOR_EMAIL="$EMAIL"
-export GIT_COMMITTER_EMAIL="$EMAIL"
