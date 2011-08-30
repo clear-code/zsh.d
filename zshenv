@@ -117,7 +117,7 @@ fi
 ## ~/.zsh.d/email → ~/.emailの順に探して最初に見つかったファイルから読み込む。
 email_files=(~/.zsh.d/email(N-/)
              ~/.email(N-/))
-for email_file in email_file; do
+for email_file in ${email_files}; do
     export EMAIL=$(cat "$email_file")
     break
 done
