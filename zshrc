@@ -38,6 +38,9 @@ setopt prompt_percent
 setopt transient_rprompt
 
 ## 256色生成用便利関数
+### red: 0-5
+### green: 0-5
+### blue: 0-5
 color256()
 {
     local red=$1; shift
@@ -153,3 +156,46 @@ precmd()
     ## プロンプトを動的に更新する。
     update_prompt
 }
+
+
+# 補完
+## 初期化
+autoload -U compinit
+compinit
+
+## 補完方法毎にグループ化する。
+### 補完方法の表示方法
+###   %B...%b: 「...」を太字にする。
+###   %d: 補完方法のラベル
+zstyle ':completion:*' format '%B%d%b'
+
+## 補完侯補をメニューから選択する。
+### yes: 補完候補の一覧を出しながら補完する。
+### select=2: 補完候補を一覧から選択する。
+###           ただし、補完候補が2つ以上なければすぐに補完する。
+zstyle ':completion:*:default' menu yes select=2
+
+## 補完候補に色を付ける。
+### "": 空文字列はデフォルト値を使うという意味。
+zstyle ':completion:*:default' list-colors ""
+
+## 補完候補をより曖昧に選択する。
+### m:{a-z}={A-Z}: 小文字を大文字に変えたものでも補完する。
+### r:|[._-]=*: 「.」「_」「-」の前にワイルドカード「*」があるものとして補完する。
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z} r:|[._-]=*'
+
+## 補完方法の設定。
+### _complete: 補完する。
+### _match: globを展開しないで候補の一覧から補完する。
+### _approximate: 似ている補完候補も補完候補とする。
+### _history: ヒストリのコマンドも補完候補とする。
+### _prefix: カーソル以降を無視してカーソル位置までで補完する。
+### _ignored: 補完候補にださないと指定したものも補完候補とする。
+zstyle ':completion:*' completer _complete _match _approximate _history _prefix _ignored
+
+
+## カーソル位置で補完する。
+setopt complete_in_word
+
+## globを展開しないで候補の一覧から補完する。
+setopt glob_complete
