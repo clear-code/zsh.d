@@ -37,31 +37,60 @@ setopt prompt_percent
 ## コピペしやすいようにコマンド実行後は右プロンプトを消す。
 setopt transient_rprompt
 
+## 256色生成用便利関数
+color256()
+{
+    local red=$1; shift
+    local green=$2; shift
+    local blue=$3; shift
+
+    echo -n $[$red * 36 + $green * 6 + $blue + 16]
+}
+
+fg256()
+{
+    echo -n $'\e[38;5;'$(color256 "$@")"m"
+}
+
+bg256()
+{
+    echo -n $'\e[48;5;'$(color256 "$@")"m"
+}
+
 ## プロンプトの作成
 ### ↓のようにする。
 ###   -(user@debian)-(0)-<2011/09/01 00:54>------------------------------[/home/user]-
 ###   -[84](0)%                                                                   [~]
 
 ### プロンプトバーの左側
+###   %{%B%}...%{%b%}: 「...」を太字にする。
+###   %{%F{cyan}%}...%{%f%}: 「...」をシアン色の文字にする。
 ###   %n: ユーザ名
 ###   %m: ホスト名（完全なホスト名ではなくて短いホスト名）
-###   %{%B%(?.%F{green}.%F{red})%}%?%{%f%b%}:
+###   %{%B%F{white}%(?.%K{green}.%K{red})%}%?%{%f%k%b%}:
 ###                           最後に実行したコマンドが正常終了していれば
-###                           前景色を緑+太字にして異常終了していれば
-###                           赤+太字にする。
+###                           太字で白文字で緑背景にして異常終了していれば
+###                           太字で白文字で赤背景にする。
+###   %{%F{white}%}: 白文字にする。
 ###     %(x.true-text.false-text): xが真のときはtrue-textになり
 ###                                偽のときはfalse-textになる。
-###     ?: 最後に実行したコマンドの終了ステータスが0のときに真になる。
-###     %F{green}: 前景色を緑にする。
-###     %F{red}: 前景色を赤にする。
+###       ?: 最後に実行したコマンドの終了ステータスが0のときに真になる。
+###       %K{green}: 緑景色にする。
+###       %K{red}: 赤景色を赤にする。
 ###   %?: 最後に実行したコマンドの終了ステータス
-###   %{%f%}: 前景色を元に戻す。
+###   %{%k%}: 背景色を元に戻す。
+###   %{%f%}: 文字の色を元に戻す。
+###   %{%b%}: 太字を元に戻す。
 ###   %D{%Y/%m/%d %H:%M}: 日付。「年/月/日 時:分」というフォーマット。
-prompt_bar_left_status="(%{%B%(?.%F{green}.%F{red})%}%?%{%f%b%})"
-prompt_bar_left="-(%n@%m)-${prompt_bar_left_status}-<%D{%Y/%m/%d %H:%M}>-"
+prompt_bar_left_self="(%{%B%}%n%{%b%}%{%F{cyan}%}@%{%f%}%{%B%}%m%{%b%})"
+prompt_bar_left_status="(%{%B%F{white}%(?.%K{green}.%K{red})%}%?%{%k%f%b%})"
+prompt_bar_left_date="<%{%B%}%D{%Y/%m/%d %H:%M}%{%b%}>"
+prompt_bar_left="-${prompt_bar_left_self}-${prompt_bar_left_status}-${prompt_bar_left_date}-"
 ### プロンプトバーの右側
+###   %{%B%K{magenta}%F{white}%}...%{%f%k%b%}:
+###       「...」を太字のマジェンタ背景の白文字にする。
 ###   %d: カレントディレクトリのフルパス（省略しない）
-prompt_bar_right="-[%d]-"
+prompt_bar_right="-[%{%B%K{magenta}%F{white}%}%d%{%f%k%b%}]-"
 
 ## プロンプトフォーマットを展開した後の文字数を返す。
 count_prompt_string_characters()
@@ -113,9 +142,9 @@ update_prompt()
     #     %#: 一般ユーザなら「%」、rootユーザなら「#」になる。
     PROMPT="${bar_left}${bar_center}${bar_right}"$'\n'"-[%h](%j)%{%B%}%#%{%b%} "
     # 右プロンプト
-    #  %{%B%F{yellow}}...%{%f%b%}: 「...」太字で前景色を黄色にする。
+    #  %{%B%F{white}%K{green}}...%{%k%f%b%}: 「...」を太字で緑背景の白文字にする。
     #  %~: カレントディレクトリのフルパス（可能なら「~」で省略する）
-    RPROMPT="[%{%B%F{yellow}%}%~%{%f%b%}]"
+    RPROMPT="[%{%B%F{white}%K{magenta}%}%~%{%k%f%b%}]"
 }
 
 ## コマンド実行前に呼び出されるフック。
