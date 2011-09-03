@@ -65,6 +65,13 @@ bg256()
 ###   -(user@debian)-(0)-<2011/09/01 00:54>------------------------------[/home/user]-
 ###   -[84](0)%                                                                   [~]
 
+## バージョン管理システムの情報も表示する
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' formats \
+    '(%{%F{white}%K{green}%}%s%{%f%k%})-[%{%F{white}%K{blue}%}%b%{%f%k%}]'
+zstyle ':vcs_info:*' actionformats \
+    '(%{%F{white}%K{green}%}%s%{%f%k%})-[%{%F{white}%K{blue}%}%b%{%f%k%}|%{%F{white}%K{red}%}%a%{%f%k%}]'
+
 ### プロンプトバーの左側
 ###   %{%B%}...%{%b%}: 「...」を太字にする。
 ###   %{%F{cyan}%}...%{%f%}: 「...」をシアン色の文字にする。
@@ -159,9 +166,17 @@ update_prompt()
     #     %#: 一般ユーザなら「%」、rootユーザなら「#」になる。
     PROMPT="${bar_left}${bar_right}"$'\n'"-[%h](%j)%{%B%}%#%{%b%} "
     # 右プロンプト
-    #  %{%B%F{white}%K{green}}...%{%k%f%b%}: 「...」を太字で緑背景の白文字にする。
-    #  %~: カレントディレクトリのフルパス（可能なら「~」で省略する）
+    #   %{%B%F{white}%K{green}}...%{%k%f%b%}:
+    #       「...」を太字で緑背景の白文字にする。
+    #   %~: カレントディレクトリのフルパス（可能なら「~」で省略する）
     RPROMPT="[%{%B%F{white}%K{magenta}%}%~%{%k%f%b%}]"
+
+    # バージョン管理システムの情報を取得する。
+    LANG=C vcs_info >&/dev/null
+    # バージョン管理システムの情報があったら右プロンプトに表示する。
+    if [ -n "$vcs_info_msg_0_" ]; then
+	RPROMPT="${vcs_info_msg_0_}-${RPROMPT}"
+    fi
 }
 
 ## コマンド実行前に呼び出されるフック。
