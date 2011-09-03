@@ -59,7 +59,7 @@ ruby_path=(# カレントディレクトリのライブラリを優先する
            ./lib)
 
 # Pythonの設定
-### ライブラリのロードパス
+## ライブラリのロードパス
 ### -x: export PYTHONPATHも一緒に行う。
 ### -T: PYTHONPATHとpython_pathを連動する。
 typeset -xT PYTHONPATH pyhon_path
@@ -68,6 +68,25 @@ typeset -U python_path
 ### パスを設定。
 python_path=(# カレントディレクトリのライブラリを優先する
              ./lib)
+
+# pkg-configの設定
+## .pcのロードパス
+### -x: export PKG_CONFIG_PATHも一緒に行う。
+### -T: PKG_CONFIG_PATHとpkg_config_pathを連動する。
+typeset -xT PKG_CONFIG_PATH pkg_config_path
+### 重複したパスを登録しない。
+typeset -U pkg_config_path
+### パスを設定。
+### (N-/) 存在しないディレクトリは登録しない。
+###    パス(...): ...という条件にマッチするパスのみ残す。
+###            N: NULL_GLOBオプションを設定。
+###               globがマッチしなかったり存在しないパスを無視する。
+###            -: シンボリックリンク先のパスを評価。
+###            /: ディレクトリのみ残す。
+pkg_config_path=(# 自分用
+                 $HOME/local/lib/pkgconfig(N-/)
+                 # MacPorts用
+                 /opt/local/lib/pkgconfig(N-/))
 
 # ページャの設定
 if type lv > /dev/null 2>&1; then
