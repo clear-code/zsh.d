@@ -96,7 +96,8 @@ prompt_bar_left="-${prompt_bar_left_self}-${prompt_bar_left_status}-${prompt_bar
 prompt_bar_right="-[%{%B%K{magenta}%F{white}%}%d%{%f%k%b%}]-"
 
 ## プロンプトフォーマットを展開した後の文字数を返す。
-count_prompt_string_characters()
+## 日本語未対応。
+count_prompt_characters()
 {
     # print:
     #   -P: プロンプトフォーマットを展開する。
@@ -114,36 +115,49 @@ update_prompt()
     # いるのでこれは一番最初に実行しなければいけない。そうし
     # ないと、最後に実行したコマンドの終了ステータスが消えて
     # しまう。
-    local bar_left_length=$(count_prompt_string_characters "$prompt_bar_left")
-    # プロンプトバーの右側の文字数を数える。
-    local bar_right_length=$(count_prompt_string_characters "$prompt_bar_right")
+    local bar_left_length=$(count_prompt_characters "$prompt_bar_left")
     # プロンプトバーに使える残り文字を計算する。
     # $COLUMNSにはターミナルの横幅が入っている。
-    local bar_rest_length=$[COLUMNS - bar_left_length - bar_right_length]
+    local bar_rest_length=$[COLUMNS - bar_left_length]
 
     local bar_left="$prompt_bar_left"
-    local bar_right="$prompt_bar_right"
-    local bar_center=
-    if [ $bar_rest_length -ge 0 ]; then
-        # スペースが余る場合はバーの真ん中に「---...---」を入れる。
-	bar_center=${(l:${bar_rest_length}::-:)}
-    else
-        # スペースが余っていない場合は右側に表示するパスの前半を省略して
-	# 「-[.../logn/path/]-」にする。
-	local bar_right_without_path=${bar_right:s/%d//}
-	local max_path_length=$[COLUMNS - bar_left_length - $#bar_right_without_path]
-	bar_right=${bar_right:s/%d/%${max_path_length}<...<%d%<</} #
-    fi
+    # パスに展開される「%d」を削除。
+    local bar_right_without_path="${prompt_bar_right:s/%d//}"
+    # 「%d」を抜いた文字数を計算する。
+    local bar_right_without_path_length=$(count_prompt_characters "$bar_right_without_path")
+    # パスの最大長を計算する。
+    #   $[...]: 「...」を算術演算した結果で展開する。
+    local max_path_length=$[bar_rest_length - bar_right_without_path_length]
+    # パスに展開される「%d」に最大文字数制限をつける。
+    #   %d -> %(C,%${max_path_length}<...<%d%<<,)
+    #     %(x,true-text,false-text):
+    #         xが真のときはtrue-textになり偽のときはfalse-textになる。
+    #         ここでは、「%N<...<%d%<<」の効果をこの範囲だけに限定させる
+    #         ために用いているだけなので、xは必ず真になる条件を指定している。
+    #       C: 現在の絶対パスが/以下にあると真。なので必ず真になる。
+    #       %${max_path_length}<...<%d%<<:
+    #          「%d」が「${max_path_length}」カラムより長かったら、
+    #          長い分を削除して「...」にする。最終的に「...」も含めて
+    #          「${max_path_length}」カラムより長くなることはない。
+    bar_right=${prompt_bar_right:s/%d/%(C,%${max_path_length}<...<%d%<<,)/}
+    # 「${bar_rest_length}」文字分の「-」を作っている。
+    # どうせ後で切り詰めるので十分に長い文字列を作っているだけ。
+    # 文字数はざっくり。
+    local separator="${(l:${bar_rest_length}::-:)}"
+    # プロンプトバー全体を「${bar_rest_length}」カラム分にする。
+    #   %${bar_rest_length}<<...%<<:
+    #     「...」を最大で「${bar_rest_length}」カラムにする。
+    bar_right="%${bar_rest_length}<<${separator}${bar_right}%<<"
 
     # プロンプトバーと左プロンプトを設定
-    #   "${bar_left}${bar_center}${bar_right}": プロンプトバー
+    #   "${bar_left}${bar_right}": プロンプトバー
     #   $'\n': 改行
     #   "-[%h](%j)%{%B%}%#%{%b%} ": 2行目左にでるプロンプト
     #     %h: ヒストリ数。
     #     %j: 実行中のジョブ数。
     #     %{%B%}...%{%b%}: 「...」を太字にする。
     #     %#: 一般ユーザなら「%」、rootユーザなら「#」になる。
-    PROMPT="${bar_left}${bar_center}${bar_right}"$'\n'"-[%h](%j)%{%B%}%#%{%b%} "
+    PROMPT="${bar_left}${bar_right}"$'\n'"-[%h](%j)%{%B%}%#%{%b%} "
     # 右プロンプト
     #  %{%B%F{white}%K{green}}...%{%k%f%b%}: 「...」を太字で緑背景の白文字にする。
     #  %~: カレントディレクトリのフルパス（可能なら「~」で省略する）
@@ -151,11 +165,7 @@ update_prompt()
 }
 
 ## コマンド実行前に呼び出されるフック。
-precmd()
-{
-    ## プロンプトを動的に更新する。
-    update_prompt
-}
+precmd_functions=($precmd_functions update_prompt)
 
 
 # 補完
@@ -184,14 +194,15 @@ zstyle ':completion:*:default' list-colors ""
 ### r:|[._-]=*: 「.」「_」「-」の前にワイルドカード「*」があるものとして補完する。
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z} r:|[._-]=*'
 
-## 補完方法の設定。
+## 補完方法の設定。指定した順番に実行する。
+### _oldlist 前回の補完結果を再利用する。
 ### _complete: 補完する。
 ### _match: globを展開しないで候補の一覧から補完する。
-### _approximate: 似ている補完候補も補完候補とする。
 ### _history: ヒストリのコマンドも補完候補とする。
-### _prefix: カーソル以降を無視してカーソル位置までで補完する。
 ### _ignored: 補完候補にださないと指定したものも補完候補とする。
-zstyle ':completion:*' completer _complete _match _approximate _history _prefix _ignored
+### _approximate: 似ている補完候補も補完候補とする。
+### _prefix: カーソル以降を無視してカーソル位置までで補完する。
+zstyle ':completion:*' completer _oldlist _complete _match _history _ignored _approximate _prefix
 
 
 ## カーソル位置で補完する。
@@ -199,3 +210,46 @@ setopt complete_in_word
 
 ## globを展開しないで候補の一覧から補完する。
 setopt glob_complete
+
+## --prefix=~/localというように「=」の後でも
+## 「~」や「=コマンド」などのファイル名展開を行う。
+setopt magic_equal_subst
+
+
+# 実行時間
+## 実行したプロセスの消費時間が3秒以上かかったら
+## 自動的に消費時間の統計情報を表示する。
+REPORTTIME=3
+
+# ログイン監視
+## 全てのユーザのログイン・ログアウトを監視する。
+watch="all"
+## ログイン時にはすぐに表示する。
+log
+
+# 単語
+## 「/」も単語区切りとみなす。
+WORDCHARS=${WORDCHARS:s,/,,}
+
+
+# エイリアス
+## ページャーを使いやすくする
+### grep -r def *.rb L -> grep -r def *.rb |& lv
+alias -g L="|& $PAGER"
+## grepを使いやすくする
+alias -g G='| grep'
+## 後はおまけ
+alias -g H='| head'
+alias -g T='| tail'
+alias -g S='| sed'
+
+
+# 現在地
+## ウィンドウタイトルに現在地を表示。
+show_current_directory_in_title() {
+    print -Pn "\e]2; [%m] : %~\a"
+}
+chpwd_functions=($chpwd_functions show_current_directory_in_title)
+
+## ディレクトリが変わったらディレクトリスタックを表示。
+chpwd_functions=($chpwd_functions dirs)
