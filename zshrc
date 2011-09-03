@@ -8,6 +8,11 @@ bindkey -e
 setopt auto_cd
 ## cdで移動してもpushdと同じようにディレクトリスタックに追加する。
 setopt auto_pushd
+## カレントディレクトリ中に指定されたディレクトリが見つからなかった場合に
+## 移動先を検索するリスト。
+cdpath=(~)
+## ディレクトリが変わったらディレクトリスタックを表示。
+chpwd_functions=($chpwd_functions dirs)
 
 # ヒストリ
 ## ヒストリを保存するファイル
@@ -204,10 +209,16 @@ zstyle ':completion:*:default' menu yes select=2
 ### "": 空文字列はデフォルト値を使うという意味。
 zstyle ':completion:*:default' list-colors ""
 
-## 補完候補をより曖昧に選択する。
+## 補完候補がなければより曖昧に候補を探す。
 ### m:{a-z}={A-Z}: 小文字を大文字に変えたものでも補完する。
 ### r:|[._-]=*: 「.」「_」「-」の前にワイルドカード「*」があるものとして補完する。
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z} r:|[._-]=*'
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z} r:|[._-]=*'
+
+## 補完候補をキャッシュする。
+zstyle ':completion:*' use-cache yes
+
+## 詳細な情報を使う。
+zstyle ':completion:*' verbose yes
 
 ## 補完方法の設定。指定した順番に実行する。
 ### _oldlist 前回の補完結果を再利用する。
@@ -217,8 +228,8 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z} r:|[._-]=*'
 ### _ignored: 補完候補にださないと指定したものも補完候補とする。
 ### _approximate: 似ている補完候補も補完候補とする。
 ### _prefix: カーソル以降を無視してカーソル位置までで補完する。
-zstyle ':completion:*' completer _oldlist _complete _match _history _ignored _approximate _prefix
-
+zstyle ':completion:*' completer \
+    _oldlist _complete _match _history _ignored _approximate _prefix
 
 ## カーソル位置で補完する。
 setopt complete_in_word
@@ -226,9 +237,20 @@ setopt complete_in_word
 ## globを展開しないで候補の一覧から補完する。
 setopt glob_complete
 
+## 補完時にヒストリを自動的に展開する。
+setopt hist_expand
+
+## 補完候補がないときなどにビープ音を鳴らさない。
+setopt no_beep
+
+
+# 展開
 ## --prefix=~/localというように「=」の後でも
 ## 「~」や「=コマンド」などのファイル名展開を行う。
 setopt magic_equal_subst
+## 拡張globを有効にする。
+## glob中で「(#...)」という書式で指定する。
+setopt extended_glob
 
 
 # 実行時間
@@ -236,32 +258,74 @@ setopt magic_equal_subst
 ## 自動的に消費時間の統計情報を表示する。
 REPORTTIME=3
 
-# ログイン監視
+# ログイン・ログアウト
 ## 全てのユーザのログイン・ログアウトを監視する。
 watch="all"
 ## ログイン時にはすぐに表示する。
 log
+
+## ^Dでログアウトしないようにする。
+setopt ignore_eof
+
 
 # 単語
 ## 「/」も単語区切りとみなす。
 WORDCHARS=${WORDCHARS:s,/,,}
 
 
-# エイリアス
-## ページャーを使いやすくする
+# alias
+## ページャーを使いやすくする。
 ### grep -r def *.rb L -> grep -r def *.rb |& lv
 alias -g L="|& $PAGER"
-## grepを使いやすくする
+## grepを使いやすくする。
 alias -g G='| grep'
-## 後はおまけ
+## 後はおまけ。
 alias -g H='| head'
 alias -g T='| tail'
 alias -g S='| sed'
 
+## 完全に削除。
+alias rr="command rm -rf"
+## ファイル操作を確認する。
+alias rm="rm -i"
+alias cp="cp -i"
+alias mv="mv -i"
 
-# 現在地
-## ディレクトリが変わったらディレクトリスタックを表示。
-chpwd_functions=($chpwd_functions dirs)
+## pushd/popdのショートカット。
+alias pd="pushd"
+alias po="popd"
+
+## lsとpsの設定
+### ls: できるだけGNU lsを使う。
+### ps: 自分関連のプロセスのみ表示。
+case $(uname) in
+    *BSD|Darwin)
+	if [ -x "$(which gnuls)" ]; then
+	    alias ls="gnuls"
+	    alias la="ls -lhAF --color=auto"
+	else
+	    alias la="ls -lhAFG"
+	fi
+	alias ps="ps -fU$(whoami)"
+	;;
+    SunOS)
+	if [ -x "`which gls`" ]; then
+	    alias ls="gls"
+	    alias la="ls -lhAF --color=auto"
+	else
+	    alias la="ls -lhAF"
+	fi
+	alias ps="ps -fl -u$(/usr/xpg4/bin/id -un)"
+	;;
+    *)
+	alias la="ls -lhAF --color=auto"
+	alias ps="ps -fU$(whoami) --forest"
+	;;
+esac
+
+## sudo時にはsbinにパスを通す。
+alias sudo='path=({,/usr/pkg,/usr/local,/usr}/sbin(N-/) $path) command sudo'
+
 
 # ウィンドウタイトル
 ## 実行中のコマンドとユーザ名とホスト名とカレントディレクトリを表示。
