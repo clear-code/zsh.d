@@ -204,10 +204,9 @@ compinit
 zstyle ':completion:*' format '%B%d%b'
 
 ## 補完侯補をメニューから選択する。
-### yes: 補完候補の一覧を出しながら補完する。
 ### select=2: 補完候補を一覧から選択する。
 ###           ただし、補完候補が2つ以上なければすぐに補完する。
-zstyle ':completion:*:default' menu yes select=2
+zstyle ':completion:*:default' menu select=2
 
 ## 補完候補に色を付ける。
 ### "": 空文字列はデフォルト値を使うという意味。
