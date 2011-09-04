@@ -38,6 +38,7 @@ package.zshはGitHub上にあるパッケージを簡単にインストールす
 ~/.zsh.d/config/packages.zshを作成します。
 
 ~/.zsh.d/config/packages.zsh:
+
 	# -*- sh -*-
 	
 	# パッケージ管理システムを読み込む。
@@ -66,6 +67,7 @@ package.zshはGitHub上にあるパッケージを簡単にインストールす
 そして、~/.zshrcからこの設定ファイルを読み込みます。
 
 ~/.zshrc:
+
 	source ~/.zsh.d/zshrc
 	source ~/.zsh.d/config/packages.zsh
 
