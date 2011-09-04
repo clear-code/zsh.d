@@ -223,6 +223,9 @@ zstyle ':completion:*' use-cache yes
 ## 詳細な情報を使う。
 zstyle ':completion:*' verbose yes
 
+## sudo時にはsudo用のパスも使う。
+zstyle ':completion:sudo:*' environ PATH="$SUDO_PATH:$PATH"
+
 ## 補完方法の設定。指定した順番に実行する。
 ### _oldlist 前回の補完結果を再利用する。
 ### _complete: 補完する。
@@ -325,10 +328,6 @@ case $(uname) in
 	alias ps="ps -fU$(whoami) --forest"
 	;;
 esac
-
-## sudo時にはsbinにパスを通す。
-alias sudo='path=({,/usr/pkg,/usr/local,/usr}/sbin(N-/) $path) command sudo'
-
 
 # ウィンドウタイトル
 ## 実行中のコマンドとユーザ名とホスト名とカレントディレクトリを表示。
