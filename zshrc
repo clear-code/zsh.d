@@ -32,6 +32,8 @@ setopt hist_ignore_space
 setopt inc_append_history
 ## zshプロセス間でヒストリを共有する。
 setopt share_history
+## C-sでのヒストリ検索が潰されてしまうため、出力停止・開始用にC-s/C-qを使わない。
+setopt no_flow_control
 
 
 # プロンプト
@@ -239,15 +241,14 @@ zstyle ':completion:*' completer \
 
 ## カーソル位置で補完する。
 setopt complete_in_word
-
 ## globを展開しないで候補の一覧から補完する。
 setopt glob_complete
-
 ## 補完時にヒストリを自動的に展開する。
 setopt hist_expand
-
 ## 補完候補がないときなどにビープ音を鳴らさない。
 setopt no_beep
+## 辞書順ではなく数字順に並べる。
+setopt numeric_glob_sort
 
 
 # 展開
@@ -257,6 +258,13 @@ setopt magic_equal_subst
 ## 拡張globを有効にする。
 ## glob中で「(#...)」という書式で指定する。
 setopt extended_glob
+## globでパスを生成したときに、パスがディレクトリだったら最後に「/」をつける。
+setopt mark_dirs
+
+
+# ジョブ
+## jobsでプロセスIDも出力する。
+setopt long_list_jobs
 
 
 # 実行時間
@@ -345,4 +353,7 @@ update_title() {
     echo -n "(${command})"
     print -n -P " %n@%m:%~\a"
 }
-preexec_functions=($preexec_functions update_title)
+## X環境上でだけウィンドウタイトルを変える。
+if [ -n "$DISPLAY" ]; then
+    preexec_functions=($preexec_functions update_title)
+fi
