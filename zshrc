@@ -1,6 +1,7 @@
 # -*- sh -*-
 
-# Emamcsキーバインドを使う。
+# キーバインド
+## Emacsキーバインドを使う。
 bindkey -e
 
 # ディレクトリ移動
@@ -204,6 +205,7 @@ compinit
 ###   %B...%b: 「...」を太字にする。
 ###   %d: 補完方法のラベル
 zstyle ':completion:*' format '%B%d%b'
+zstyle ':completion:*' group-name ''
 
 ## 補完侯補をメニューから選択する。
 ### select=2: 補完候補を一覧から選択する。
@@ -219,15 +221,6 @@ zstyle ':completion:*:default' list-colors ""
 ### r:|[._-]=*: 「.」「_」「-」の前にワイルドカード「*」があるものとして補完する。
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z} r:|[._-]=*'
 
-## 補完候補をキャッシュする。
-zstyle ':completion:*' use-cache yes
-
-## 詳細な情報を使う。
-zstyle ':completion:*' verbose yes
-
-## sudo時にはsudo用のパスも使う。
-zstyle ':completion:sudo:*' environ PATH="$SUDO_PATH:$PATH"
-
 ## 補完方法の設定。指定した順番に実行する。
 ### _oldlist 前回の補完結果を再利用する。
 ### _complete: 補完する。
@@ -238,6 +231,13 @@ zstyle ':completion:sudo:*' environ PATH="$SUDO_PATH:$PATH"
 ### _prefix: カーソル以降を無視してカーソル位置までで補完する。
 zstyle ':completion:*' completer \
     _oldlist _complete _match _history _ignored _approximate _prefix
+
+## 補完候補をキャッシュする。
+zstyle ':completion:*' use-cache yes
+## 詳細な情報を使う。
+zstyle ':completion:*' verbose yes
+## sudo時にはsudo用のパスも使う。
+zstyle ':completion:sudo:*' environ PATH="$SUDO_PATH:$PATH"
 
 ## カーソル位置で補完する。
 setopt complete_in_word
