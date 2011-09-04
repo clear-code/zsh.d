@@ -215,7 +215,7 @@ zstyle ':completion:*:default' list-colors ""
 ## 補完候補がなければより曖昧に候補を探す。
 ### m:{a-z}={A-Z}: 小文字を大文字に変えたものでも補完する。
 ### r:|[._-]=*: 「.」「_」「-」の前にワイルドカード「*」があるものとして補完する。
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z} r:|[._-]=*'
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z} r:|[._-]=*'
 
 ## 補完候補をキャッシュする。
 zstyle ':completion:*' use-cache yes
