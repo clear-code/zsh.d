@@ -27,11 +27,11 @@ path=(# システム用
       /usr/bin(N-/)
       /usr/games(N-/))
 
-## sudo時のパスの設定
-### -x: export SUDO_PATHも一緒に行う。
-### -T: SUDO_PATHとsudo_pathを連動する。
+# sudo時のパスの設定
+## -x: export SUDO_PATHも一緒に行う。
+## -T: SUDO_PATHとsudo_pathを連動する。
 typeset -xT SUDO_PATH sudo_path
-### 重複したパスを登録しない。
+## 重複したパスを登録しない。
 typeset -U sudo_path
 ## (N-/): 存在しないディレクトリは登録しない。
 ##    パス(...): ...という条件にマッチするパスのみ残す。
