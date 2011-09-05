@@ -186,6 +186,14 @@ update_prompt()
     #       「...」を太字で緑背景の白文字にする。
     #   %~: カレントディレクトリのフルパス（可能なら「~」で省略する）
     RPROMPT="[%{%B%F{white}%K{magenta}%}%~%{%k%f%b%}]"
+    case "$TERM_PROGRAM" in
+	Apple_Terminal)
+	    # Mac OS Xのターミナルでは$COLUMNSに右余白が含まれていないので
+	    # 右プロンプトに「-」を追加して調整。
+	    ## 2011-09-05
+	    RPROMPT="${RPROMPT}-"
+	    ;;
+    esac
 
     # バージョン管理システムの情報を取得する。
     LANG=C vcs_info >&/dev/null
