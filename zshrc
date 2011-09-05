@@ -138,7 +138,7 @@ update_prompt()
     # いるのでこれは一番最初に実行しなければいけない。そうし
     # ないと、最後に実行したコマンドの終了ステータスが消えて
     # しまう。
-    local bar_left_length=$(count_prompt_characters "$prompt_bar_left")
+    local bar_left_length="$(count_prompt_characters '$prompt_bar_left')"
     # プロンプトバーに使える残り文字を計算する。
     # $COLUMNSにはターミナルの横幅が入っている。
     local bar_rest_length=$[COLUMNS - bar_left_length]
@@ -147,7 +147,7 @@ update_prompt()
     # パスに展開される「%d」を削除。
     local bar_right_without_path="${prompt_bar_right:s/%d//}"
     # 「%d」を抜いた文字数を計算する。
-    local bar_right_without_path_length=$(count_prompt_characters "$bar_right_without_path")
+    local bar_right_without_path_length="$(count_prompt_characters '$bar_right_without_path')"
     # パスの最大長を計算する。
     #   $[...]: 「...」を算術演算した結果で展開する。
     local max_path_length=$[bar_rest_length - bar_right_without_path_length]
