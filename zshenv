@@ -127,12 +127,21 @@ fi
 if type ggrep > /dev/null 2>&1; then
     alias grep=ggrep
 fi
+## grepのバージョンを検出。
+grep_version="$(grep --version | head -n 1 | sed -e 's/^[^0-9.]*\([0-9.]*\)$/\1/')"
 ## デフォルトオプションの設定
 export GREP_OPTIONS
 ### バイナリファイルにはマッチさせない。
 GREP_OPTIONS="--binary-files=without-match"
-### grep対象としてディレクトリを指定したらディレクトリ内を再帰的にgrepする。
-GREP_OPTIONS="--directories=recurse $GREP_OPTIONS"
+case "$grep_version" in
+    1.*|2.[0-4].*|2.5.[0-3])
+	;;
+    *)
+	### grep 2.5.4以降のみの設定
+        ### grep対象としてディレクトリを指定したらディレクトリ内を再帰的にgrepする。
+	GREP_OPTIONS="--directories=recurse $GREP_OPTIONS"
+	;;
+esac
 ### 拡張子が.tmpのファイルは無視する。
 GREP_OPTIONS="--exclude=\*.tmp $GREP_OPTIONS"
 ## 管理用ディレクトリを無視する。
