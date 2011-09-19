@@ -297,6 +297,9 @@ setopt ignore_eof
 # 単語
 ## 「/」も単語区切りとみなす。
 WORDCHARS=${WORDCHARS:s,/,,}
+## 「|」も単語区切りとみなす。
+## 2011-09-19
+WORDCHARS="${WORDCHARS}|"
 
 
 # alias
