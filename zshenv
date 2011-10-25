@@ -23,6 +23,7 @@ path=(# システム用
       # Solaris用
       /opt/csw/bin(N-/)
       /usr/sfw/bin(N-/)
+      /opt/ccs/bin(N-/)
       # Cygwin用
       /cygdrive/c/meadow/bin(N-/)
       # システム用
