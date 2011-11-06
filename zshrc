@@ -352,6 +352,23 @@ case $(uname) in
 	;;
 esac
 
+## カスタムaliasの設定
+### ~/.zsh.d/zshalias → ~/.zshaliasの順に探して
+### 最初に見つかったファイルを読み込む。
+### (N-.): 存在しないファイルは登録しない。
+###    パス(...): ...という条件にマッチするパスのみ残す。
+###            N: NULL_GLOBオプションを設定。
+###               globがマッチしなかったり存在しないパスを無視する。
+###            -: シンボリックリンク先のパスを評価。
+###            .: 通常のファイルのみ残す。
+### 2011-11-06
+alais_files=(~/.zsh.d/zshalias(N-.)
+             ~/.zshalias(N-.))
+for alias_file in ${alias_files}; do
+    source "${alias_file}"
+    break
+done
+
 # ウィンドウタイトル
 ## 実行中のコマンドとユーザ名とホスト名とカレントディレクトリを表示。
 update_title() {
