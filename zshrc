@@ -352,6 +352,14 @@ case $(uname) in
 	;;
 esac
 
+## Emacsのショートカット。
+### 2011-11-06
+alias e="emacs &"
+
+## exitのショートカット。
+### 2011-11-06
+alias x="exit"
+
 ## カスタムaliasの設定
 ### ~/.zsh.d/zshalias → ~/.zshaliasの順に探して
 ### 最初に見つかったファイルを読み込む。
