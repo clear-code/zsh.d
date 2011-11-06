@@ -355,6 +355,9 @@ esac
 ## Emacsのショートカット。
 ### 2011-11-06
 alias e="emacs &"
+### -nw: ターミナル内でEmacsを起動する。
+### 2011-11-06
+alias enw="emacs -nw"
 
 ## exitのショートカット。
 ### 2011-11-06
