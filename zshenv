@@ -11,8 +11,11 @@ typeset -U path
 ##            /: ディレクトリのみ残す。
 path=(# システム用
       /bin(N-/)
-      # 自分用
+      # 自分用（--prefix=$HOME/localでインストールしたもの）
       $HOME/local/bin(N-/)
+      # 自分用（gem install --user-installでインストールしたもの）
+      ## 2012-01-07
+      $HOME/.gem/ruby/*/bin(N-/)
       # Debian GNU/Linux用
       /var/lib/gems/*/bin(N-/)
       # MacPorts用
