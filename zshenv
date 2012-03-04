@@ -163,6 +163,12 @@ if grep --help | grep -q -- --color; then
     GREP_OPTIONS="--color=auto $GREP_OPTIONS"
 fi
 
+# sedの設定
+## GNU sedがあったら優先して使う。
+## 2012-03-04
+if type gsed > /dev/null 2>&1; then
+    alias sed=gsed
+fi
 
 # エディタの設定
 ## vimを使う。
