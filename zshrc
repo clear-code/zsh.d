@@ -106,7 +106,7 @@ prompt_bar_left_date="<%{%B%}%D{%Y/%m/%d %H:%M}%{%b%}>"
 prompt_bar_left="-${prompt_bar_left_self}-${prompt_bar_left_status}-${prompt_bar_left_date}-"
 ### プロンプトバーの右側
 ###   %{%B%K{magenta}%F{white}%}...%{%f%k%b%}:
-###       「...」を太字のマジェンタ背景の白文字にする。
+###       「...」を太字のマゼンタ背景の白文字にする。
 ###   %d: カレントディレクトリのフルパス（省略しない）
 prompt_bar_right="-[%{%B%K{magenta}%F{white}%}%d%{%f%k%b%}]-"
 
