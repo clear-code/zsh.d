@@ -135,7 +135,7 @@ if type ggrep > /dev/null 2>&1; then
     alias grep=ggrep
 fi
 ## grepのバージョンを検出。
-grep_version="$(grep --version | head -n 1 | sed -e 's/^[^0-9.]*\([0-9.]*\)$/\1/')"
+grep_version="$(grep --version | head -n 1 | sed -e 's/^[^0-9.]*\([0-9.]*\)[^0-9.]*$/\1/')"
 ## デフォルトオプションの設定
 export GREP_OPTIONS
 ### バイナリファイルにはマッチさせない。
