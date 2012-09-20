@@ -237,12 +237,11 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z} r:|[._-]=*'
 ### _oldlist 前回の補完結果を再利用する。
 ### _complete: 補完する。
 ### _match: globを展開しないで候補の一覧から補完する。
-### _history: ヒストリのコマンドも補完候補とする。
 ### _ignored: 補完候補にださないと指定したものも補完候補とする。
 ### _approximate: 似ている補完候補も補完候補とする。
 ### _prefix: カーソル以降を無視してカーソル位置までで補完する。
 zstyle ':completion:*' completer \
-    _oldlist _complete _match _history _ignored _approximate _prefix
+    _oldlist _complete _match _ignored _approximate _prefix
 
 ## 補完候補をキャッシュする。
 zstyle ':completion:*' use-cache yes
