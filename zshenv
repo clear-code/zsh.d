@@ -48,6 +48,11 @@ typeset -U sudo_path
 ##            /: ディレクトリのみ残す。
 sudo_path=({,/usr/pkg,/usr/local,/usr}/sbin(N-/))
 
+# rootの場合はsudo用のパスもPATHに加える。
+if [ $(id --user) -eq 0 ]; then
+    path=($sudo_path $path)
+fi
+
 # man用パスの設定
 ## 重複したパスを登録しない。
 typeset -U manpath
