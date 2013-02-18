@@ -49,7 +49,7 @@ typeset -U sudo_path
 sudo_path=({,/usr/pkg,/usr/local,/usr}/sbin(N-/))
 
 # rootの場合はsudo用のパスもPATHに加える。
-if [ $(id --user) -eq 0 ]; then
+if [ $(id -u) -eq 0 ]; then
     path=($sudo_path $path)
 fi
 
