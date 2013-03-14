@@ -48,9 +48,12 @@ typeset -U sudo_path
 ##            /: ディレクトリのみ残す。
 sudo_path=({,/usr/pkg,/usr/local,/usr}/sbin(N-/))
 
-# rootの場合はsudo用のパスもPATHに加える。
 if [ $(id -u) -eq 0 ]; then
+    # rootの場合はsudo用のパスもPATHに加える。
     path=($sudo_path $path)
+else
+    # 一般ユーザーの場合はsudo時にsudo用のパスをPATHに加える。
+    alias sudo="sudo env PATH=\"$SUDO_PATH:$PATH\""
 fi
 
 # man用パスの設定
