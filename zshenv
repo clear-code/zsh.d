@@ -205,3 +205,19 @@ for email_file in ${email_files}; do
     export EMAIL=$(cat "$email_file")
     break
 done
+
+# VTEの設定
+## 2013-07-14
+## gnome-terminal 2.32以降で新しいタブを開いたときに
+## カレントディレクトリーが前のタブと同じにならない問題への対応
+## 参考: https://bugzilla.gnome.org/show_bug.cgi?id=697475
+##
+## ディレクトリーが変わる毎に
+## OSC (Operating System Command)エスケープシーケンスを送って
+## 現在のディレクトリー情報を更新する必要があるらしい。
+## 具体的には以下のエスケープシーケンス。\eがEscで\aがBEL。
+## "\e7;"と"\a"の間に現在のディレクトリーをURI形式で入れる。
+##   "\e7;file:///${PWD}\a"
+## これを実行するシェルスクリプトが/etc/profile.d/vte.shに
+## インストールされているので、あったら読み込む。
+[ -f /etc/profile.d/vte.sh ] && . /etc/profile.d/vte.sh
