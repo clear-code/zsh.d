@@ -53,7 +53,8 @@ if [ $(id -u) -eq 0 ]; then
     path=($sudo_path $path)
 else
     # 一般ユーザーの場合はsudo時にsudo用のパスをPATHに加える。
-    alias sudo="sudo env PATH=\"$SUDO_PATH:$PATH\""
+    # alias sudo="sudo env PATH=\"$SUDO_PATH:$PATH\""
+    :
 fi
 
 # man用パスの設定
