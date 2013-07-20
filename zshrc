@@ -1,4 +1,4 @@
-# -*- sh -*-
+# -*- mode: sh; indent-tabs-mode: nil -*-
 
 # キーバインド
 ## Emacsキーバインドを使う。
@@ -187,19 +187,19 @@ update_prompt()
     #   %~: カレントディレクトリのフルパス（可能なら「~」で省略する）
     RPROMPT="[%{%B%F{white}%K{magenta}%}%~%{%k%f%b%}]"
     case "$TERM_PROGRAM" in
-	Apple_Terminal)
-	    # Mac OS Xのターミナルでは$COLUMNSに右余白が含まれていないので
-	    # 右プロンプトに「-」を追加して調整。
-	    ## 2011-09-05
-	    RPROMPT="${RPROMPT}-"
-	    ;;
+        Apple_Terminal)
+            # Mac OS Xのターミナルでは$COLUMNSに右余白が含まれていないので
+            # 右プロンプトに「-」を追加して調整。
+            ## 2011-09-05
+            RPROMPT="${RPROMPT}-"
+            ;;
     esac
 
     # バージョン管理システムの情報を取得する。
     LANG=C vcs_info >&/dev/null
     # バージョン管理システムの情報があったら右プロンプトに表示する。
     if [ -n "$vcs_info_msg_0_" ]; then
-	RPROMPT="${vcs_info_msg_0_}-${RPROMPT}"
+        RPROMPT="${vcs_info_msg_0_}-${RPROMPT}"
     fi
 }
 
@@ -327,27 +327,27 @@ alias po="popd"
 ### ps: 自分関連のプロセスのみ表示。
 case $(uname) in
     *BSD|Darwin)
-	if [ -x "$(which gnuls)" ]; then
-	    alias ls="gnuls"
-	    alias la="ls -lhAF --color=auto"
-	else
-	    alias la="ls -lhAFG"
-	fi
-	alias ps="ps -fU$(whoami)"
-	;;
+        if [ -x "$(which gnuls)" ]; then
+            alias ls="gnuls"
+            alias la="ls -lhAF --color=auto"
+        else
+            alias la="ls -lhAFG"
+        fi
+        alias ps="ps -fU$(whoami)"
+        ;;
     SunOS)
-	if [ -x "`which gls`" ]; then
-	    alias ls="gls"
-	    alias la="ls -lhAF --color=auto"
-	else
-	    alias la="ls -lhAF"
-	fi
-	alias ps="ps -fl -u$(/usr/xpg4/bin/id -un)"
-	;;
+        if [ -x "`which gls`" ]; then
+            alias ls="gls"
+            alias la="ls -lhAF --color=auto"
+        else
+            alias la="ls -lhAF"
+        fi
+        alias ps="ps -fl -u$(/usr/xpg4/bin/id -un)"
+        ;;
     *)
-	alias la="ls -lhAF --color=auto"
-	alias ps="ps -fU$(whoami) --forest"
-	;;
+        alias la="ls -lhAF --color=auto"
+        alias ps="ps -fU$(whoami) --forest"
+        ;;
 esac
 
 ## Emacsのショートカット。
@@ -386,9 +386,9 @@ update_title() {
     command_line=${(z)2}
     local command=
     if [ ${(t)command_line} = "array-local" ]; then
-	command="$command_line[1]"
+        command="$command_line[1]"
     else
-	command="$2"
+        command="$2"
     fi
     print -n -P "\e]2;"
     echo -n "(${command})"

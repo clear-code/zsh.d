@@ -1,4 +1,4 @@
-# -*- sh -*-
+# -*- mode: sh; indent-tabs-mode: nil -*-
 
 # パスの設定
 ## 重複したパスを登録しない。
@@ -156,12 +156,12 @@ export GREP_OPTIONS
 GREP_OPTIONS="--binary-files=without-match"
 case "$grep_version" in
     1.*|2.[0-4].*|2.5.[0-3])
-	;;
+        ;;
     *)
-	### grep 2.5.4以降のみの設定
+        ### grep 2.5.4以降のみの設定
         ### grep対象としてディレクトリを指定したらディレクトリ内を再帰的にgrepする。
-	GREP_OPTIONS="--directories=recurse $GREP_OPTIONS"
-	;;
+        GREP_OPTIONS="--directories=recurse $GREP_OPTIONS"
+        ;;
 esac
 ### 拡張子が.tmpのファイルは無視する。
 GREP_OPTIONS="--exclude=\*.tmp $GREP_OPTIONS"
