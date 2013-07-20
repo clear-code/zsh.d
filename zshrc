@@ -398,3 +398,11 @@ update_title() {
 if [ -n "$DISPLAY" ]; then
     preexec_functions=($preexec_functions update_title)
 fi
+
+# node.js
+## nvmを使っているなら有効にする
+## 2013-07-20
+nvm_sh=~/.nvm/nvm.sh
+if [ -f ${nvm_sh} ]; then
+    source ${nvm_sh}
+fi
