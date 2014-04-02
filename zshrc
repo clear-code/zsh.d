@@ -371,7 +371,7 @@ alias x="exit"
 ###            -: シンボリックリンク先のパスを評価。
 ###            .: 通常のファイルのみ残す。
 ### 2011-11-06
-alais_files=(~/.zsh.d/zshalias(N-.)
+alias_files=(~/.zsh.d/zshalias(N-.)
              ~/.zshalias(N-.))
 for alias_file in ${alias_files}; do
     source "${alias_file}"
