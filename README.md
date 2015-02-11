@@ -1,25 +1,25 @@
 <!-- -*- gfm -*- -->
 
-# Zshのオススメ設定集 #
+# Zshのオススメ設定集
 
-## 使い方 ##
+## 使い方
 
 	% git clone https://github.com/clear-code/zsh.d.git ~/.zsh.d
 	% echo "source ~/.zsh.d/zshrc" > ~/.zshrc
 	% echo "source ~/.zsh.d/zshenv" > ~/.zshenv
 
-## カスタマイズ ##
+## カスタマイズ
 
-### Eメールアドレス ###
+### Eメールアドレス
 
 ~/.zsh.d/emailまたは~/emailにメールアドレスを書いておくと、そ
 のファイルの中身が環境変数EMAILに設定されます。
 
-### その他のカスタマイズ ###
+### その他のカスタマイズ
 
 ~/.zshenvや~/.zshrcの最後に追記してください。
 
-## パッケージ管理システム ##
+## パッケージ管理システム
 
 package.zshはGitHub上にあるパッケージを簡単にインストールする
 パッケージ管理システムです。設定ファイルは以下のようなディレ
