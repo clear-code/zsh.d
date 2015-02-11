@@ -82,3 +82,13 @@ package.zshはGitHub上にあるパッケージを簡単にインストールす
 	source ~/.zsh.d/config/packages.zsh
 
 これで、次にシェルを立ち上げるとauto-fuが使えるようになります。
+
+## ライセンス
+
+ライセンスは[LGPLv3+](https://www.gnu.org/licenses/lgpl-3.0.html)です。
+ライセンスに従うならだれでも自由に利用できます。
+
+著作権者は次の通りです。
+
+  * Copyright 2011-2015 Kouhei Sutou `<kou@clear-code.com>`
+  * Copyright 2014 Kosuke Asami
