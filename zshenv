@@ -161,36 +161,32 @@ export LESS="-R"
 # grepの設定
 ## GNU grepがあったら優先して使う。
 if type ggrep > /dev/null 2>&1; then
-    alias grep=ggrep
+    grep_command=ggrep
+else
+    grep_command=grep
 fi
 ## grepのバージョンを検出。
 grep_version="$(grep --version | head -n 1 | sed -e 's/^[^0-9.]*\([0-9.]*\)[^0-9.]*$/\1/')"
-## デフォルトオプションの設定
-export GREP_OPTIONS
+## デフォルトのオプションの設定
+grep_options=""
 ### バイナリファイルにはマッチさせない。
-GREP_OPTIONS="--binary-files=without-match"
-case "$grep_version" in
-    1.*|2.[0-4].*|2.5.[0-3])
-        ;;
-    *)
-        ### grep 2.5.4以降のみの設定
-        ### grep対象としてディレクトリを指定したらディレクトリ内を再帰的にgrepする。
-        GREP_OPTIONS="--directories=recurse $GREP_OPTIONS"
-        ;;
-esac
+grep_options="--binary-files=without-match $grep_options"
 ### 拡張子が.tmpのファイルは無視する。
-GREP_OPTIONS="--exclude=\*.tmp $GREP_OPTIONS"
-## 管理用ディレクトリを無視する。
+grep_options="--exclude=\*.tmp $grep_options"
+### 管理用ディレクトリを無視する。
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
-    GREP_OPTIONS="--exclude-dir=.svn $GREP_OPTIONS"
-    GREP_OPTIONS="--exclude-dir=.git $GREP_OPTIONS"
-    GREP_OPTIONS="--exclude-dir=.deps $GREP_OPTIONS"
-    GREP_OPTIONS="--exclude-dir=.libs $GREP_OPTIONS"
+    grep_options="--exclude-dir=.svn $grep_options"
+    grep_options="--exclude-dir=.git $grep_options"
+    grep_options="--exclude-dir=.deps $grep_options"
+    grep_options="--exclude-dir=.libs $grep_options"
 fi
 ### 可能なら色を付ける。
 if grep --help 2>&1 | grep -q -- --color; then
-    GREP_OPTIONS="--color=auto $GREP_OPTIONS"
+    grep_options="--color=auto $grep_options"
 fi
+
+## デフォルトのオプションを使う。
+alias grep="${grep_command} ${grep_options}"
 
 # sedの設定
 ## GNU sedがあったら優先して使う。
