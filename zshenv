@@ -158,43 +158,6 @@ fi
 ## 2012-09-04
 export LESS="-R"
 
-# grepの設定
-## GNU grepがあったら優先して使う。
-if type ggrep > /dev/null 2>&1; then
-    grep_command=ggrep
-else
-    grep_command=grep
-fi
-## grepのバージョンを検出。
-grep_version="$(grep --version | head -n 1 | sed -e 's/^[^0-9.]*\([0-9.]*\)[^0-9.]*$/\1/')"
-## デフォルトのオプションの設定
-grep_options=""
-### バイナリファイルにはマッチさせない。
-grep_options="--binary-files=without-match $grep_options"
-### 拡張子が.tmpのファイルは無視する。
-grep_options="--exclude=\*.tmp $grep_options"
-### 管理用ディレクトリを無視する。
-if grep --help 2>&1 | grep -q -- --exclude-dir; then
-    grep_options="--exclude-dir=.svn $grep_options"
-    grep_options="--exclude-dir=.git $grep_options"
-    grep_options="--exclude-dir=.deps $grep_options"
-    grep_options="--exclude-dir=.libs $grep_options"
-fi
-### 可能なら色を付ける。
-if grep --help 2>&1 | grep -q -- --color; then
-    grep_options="--color=auto $grep_options"
-fi
-
-## デフォルトのオプションを使う。
-alias grep="${grep_command} ${grep_options}"
-
-# sedの設定
-## GNU sedがあったら優先して使う。
-## 2012-03-04
-if type gsed > /dev/null 2>&1; then
-    alias sed=gsed
-fi
-
 # エディタの設定
 ## vimを使う。
 export EDITOR=vim
