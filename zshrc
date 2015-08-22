@@ -360,7 +360,7 @@ fi
 ### grep -r def *.rb L -> grep -r def *.rb |& lv
 alias -g L="|& $PAGER"
 ## grepを使いやすくする。
-alias -g G='| grep'
+alias -g G='| grep --directories skip'
 ## 後はおまけ。
 alias -g H='| head'
 alias -g T='| tail'
