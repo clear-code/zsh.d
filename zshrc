@@ -144,7 +144,7 @@ count_prompt_characters()
     # sed:
     #   -e $'s/\e\[[0-9;]*m//g': ANSIエスケープシーケンスを削除。
     # wc:
-    #   -c: 文字数を出力する。
+    #   -m: 文字数を出力する。
     # sed:
     #   -e 's/ //g': *BSDやMac OS Xのwcは数字の前に空白を出力するので削除する。
     print -n -P -- "$1" | sed -e $'s/\e\[[0-9;]*m//g' | wc -m | sed -e 's/ //g'
