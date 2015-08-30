@@ -140,14 +140,22 @@ count_prompt_characters()
 {
     # print:
     #   -P: プロンプトフォーマットを展開する。
-    #   -n: 改行をつけない。
     # sed:
     #   -e $'s/\e\[[0-9;]*m//g': ANSIエスケープシーケンスを削除。
     # wc:
     #   -m: 文字数を出力する。
     # sed:
     #   -e 's/ //g': *BSDやMac OS Xのwcは数字の前に空白を出力するので削除する。
-    print -n -P -- "$1" | sed -e $'s/\e\[[0-9;]*m//g' | wc -m | sed -e 's/ //g'
+    #
+    # 「print -n」で改行を含めないこともできるがBSD sedは改行を入れて
+    # しまうので、まずは改行込みで計算して、最後に-1する。
+    ## 2015-08-30
+    local n_characters_including_newline=$( \
+        print -P -- "$1" | \
+            sed -e $'s/\e\[[0-9;]*m//g' | \
+            wc -m | \
+            sed -e 's/ //g')
+    echo $[n_characters_including_newline - 1]
 }
 
 ## プロンプトを更新する。
@@ -202,14 +210,6 @@ update_prompt()
     #       「...」を太字で緑背景の白文字にする。
     #   %~: カレントディレクトリのフルパス（可能なら「~」で省略する）
     RPROMPT="[%{%B%F{white}%K{magenta}%}%~%{%k%f%b%}]"
-    case "$TERM_PROGRAM" in
-        Apple_Terminal)
-            # Mac OS Xのターミナルでは$COLUMNSに右余白が含まれていないので
-            # 右プロンプトに「-」を追加して調整。
-            ## 2011-09-05
-            RPROMPT="${RPROMPT}-"
-            ;;
-    esac
 
     # バージョン管理システムの情報を取得する。
     LANG=C vcs_info >&/dev/null
