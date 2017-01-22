@@ -1,6 +1,6 @@
 # -*- mode: sh; indent-tabs-mode: nil -*-
 #
-# Copyright (C) 2011-2013  Kouhei Sutou <kou@clear-code.com>
+# Copyright (C) 2011-2017  Kouhei Sutou <kou@clear-code.com>
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -34,6 +34,9 @@ path=(# システム用
       # rbenv用
       ## 2012-02-21
       $HOME/.rbenv/bin(N-/)
+      # Miniconda用
+      ## 2017-01-22
+      $HOME/miniconda3/bin(N-/)
       # Debian GNU/Linux用
       /var/lib/gems/*/bin(N-/)
       # MacPorts用
