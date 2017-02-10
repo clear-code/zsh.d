@@ -134,7 +134,10 @@ typeset -U pkg_config_path
 ###               globがマッチしなかったり存在しないパスを無視する。
 ###            -: シンボリックリンク先のパスを評価。
 ###            /: ディレクトリのみ残す。
-pkg_config_path=(# 自分用
+pkg_config_path=(# 既存のパスを優先
+                 ## 2017-02-10
+                 $pkg_config_path
+                 # 自分用
                  $HOME/local/lib/pkgconfig(N-/)
                  # MacPorts用
                  /opt/local/lib/pkgconfig(N-/))
