@@ -18,6 +18,14 @@
 # パスの設定
 ## 重複したパスを登録しない。
 typeset -U path
+## 1度パスを設定した後は既存のパスを優先
+### 2017-02-19
+if [ "${path_is_set:-no}" = "yes" ]; then
+    base_path=($path)
+else
+    base_path=()
+fi
+export path_is_set=yes
 ## (N-/): 存在しないディレクトリは登録しない。
 ##    パス(...): ...という条件にマッチするパスのみ残す。
 ##            N: NULL_GLOBオプションを設定。
@@ -25,8 +33,7 @@ typeset -U path
 ##            -: シンボリックリンク先のパスを評価。
 ##            /: ディレクトリのみ残す。
 path=(# 既存のパスを優先
-      ## 2017-02-10
-      $path
+      $base_path
       # システム用
       /bin(N-/)
       # 自分用（--prefix=$HOME/localでインストールしたもの）
