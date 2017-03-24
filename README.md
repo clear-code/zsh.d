@@ -12,19 +12,19 @@
 
 ### Eメールアドレス
 
-~/.zsh.d/emailまたは~/.emailにメールアドレスを書いておくと、そ
+`~/.zsh.d/email`または`~/.email`にメールアドレスを書いておくと、そ
 のファイルの中身が環境変数EMAILに設定されます。
 
 ### その他のカスタマイズ
 
-~/.zshenvや~/.zshrcの最後に追記してください。
+`~/.zshenv`や`~/.zshrc`の最後に追記してください。
 
 ## パッケージ管理システム
 
-package.zshはGitHub上にあるパッケージを簡単にインストールする
+`package.zsh`はGitHub上にあるパッケージを簡単にインストールする
 パッケージ管理システムです。設定ファイルは以下のようなディレ
-クトリ構成とし、パッケージの設定は~/.zshrcではな
-く、~/.zsh.d/config/packages.zshで行うことをオススメします。
+クトリ構成とし、パッケージの設定は`~/.zshrc`ではな
+く、`~/.zsh.d/config/packages.zsh`で行うことをオススメします。
 このように設定ファイルをキレイに整理してメンテナンスしやすく
 します。
 
@@ -45,9 +45,9 @@ package.zshはGitHub上にあるパッケージを簡単にインストールす
 
 [auto-fu](https://github.com/hchbaw/auto-fu.zsh/)の設定例を以
 下に示します。まず、以下のようなパッケージ用の設定ファイル
-~/.zsh.d/config/packages.zshを作成します。
+`~/.zsh.d/config/packages.zsh`を作成します。
 
-~/.zsh.d/config/packages.zsh:
+`~/.zsh.d/config/packages.zsh`:
 
     # -*- sh -*-
     
@@ -74,9 +74,9 @@ package.zshはGitHub上にあるパッケージを簡単にインストールす
     zle -N afu+cancel-and-accept-line
     bindkey -M afu "^M" afu+cancel-and-accept-line
 
-そして、~/.zshrcからこの設定ファイルを読み込みます。
+そして、`~/.zshrc`からこの設定ファイルを読み込みます。
 
-~/.zshrc:
+`~/.zshrc`:
 
     source ~/.zsh.d/zshrc
     source ~/.zsh.d/config/packages.zsh
