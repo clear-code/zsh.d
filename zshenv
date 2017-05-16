@@ -47,6 +47,9 @@ path=(# 既存のパスを優先
       # Miniconda用
       ## 2017-01-22
       $HOME/miniconda3/bin(N-/)
+      # Yarn用
+      ## 2017-05-16
+      $HOME/.yarn/bin(N-/)
       # Debian GNU/Linux用
       /var/lib/gems/*/bin(N-/)
       # MacPorts用
