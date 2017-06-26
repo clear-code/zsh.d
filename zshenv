@@ -50,6 +50,9 @@ path=(# 既存のパスを優先
       # Yarn用
       ## 2017-05-16
       $HOME/.yarn/bin(N-/)
+      # Composer用
+      ## 2017-06-26
+      $HOME/.config/composer/vendor/bin(N-/)
       # Debian GNU/Linux用
       /var/lib/gems/*/bin(N-/)
       # MacPorts用
