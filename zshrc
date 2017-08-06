@@ -1,6 +1,6 @@
 # -*- mode: sh; indent-tabs-mode: nil -*-
 #
-# Copyright (C) 2011-2013  Kouhei Sutou <kou@clear-code.com>
+# Copyright (C) 2011-2017  Kouhei Sutou <kou@clear-code.com>
 # Copyright (C) 2014  Kosuke Asami
 #
 # This library is free software: you can redistribute it and/or modify
@@ -461,3 +461,7 @@ nvm_sh=~/.nvm/nvm.sh
 if [ -f ${nvm_sh} ]; then
     source ${nvm_sh}
 fi
+
+# C-s/C-qで出力制御をしない
+## 2017-08-06
+stty -ixoff
