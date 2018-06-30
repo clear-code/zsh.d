@@ -120,7 +120,8 @@ typeset -xT RUBYLIB ruby_path
 typeset -U ruby_path
 ### パスを設定
 ruby_path=(# カレントディレクトリのライブラリを優先する
-           ./lib)
+           ./lib
+           $ruby_path)
 
 # Pythonの設定
 ## ライブラリのロードパス
