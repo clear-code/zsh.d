@@ -302,7 +302,9 @@ REPORTTIME=3
 ## 全てのユーザのログイン・ログアウトを監視する。
 watch="all"
 ## ログイン時にはすぐに表示する。
-log
+if (builtin log) >& /dev/null; then
+  builtin log
+fi
 
 ## ^Dでログアウトしないようにする。
 setopt ignore_eof
