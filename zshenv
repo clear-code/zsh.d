@@ -127,7 +127,7 @@ ruby_path=(# カレントディレクトリのライブラリを優先する
 ## ライブラリのロードパス
 ### -x: export PYTHONPATHも一緒に行う。
 ### -T: PYTHONPATHとpython_pathを連動する。
-typeset -xT PYTHONPATH pyhon_path
+typeset -xT PYTHONPATH python_path
 ### 重複したパスを登録しない。
 typeset -U python_path
 ### パスを設定。
