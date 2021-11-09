@@ -330,8 +330,6 @@ fi
 grep_version="$(grep --version | head -n 1 | sed -e 's/^[^0-9.]*\([0-9.]*\)[^0-9.]*$/\1/')"
 ## デフォルトのオプションの設定
 grep_options=""
-### ディレクトリー内も再帰的に処理する。
-grep_options="-r $grep_options"
 ### バイナリファイルにはマッチさせない。
 grep_options="--binary-files=without-match $grep_options"
 ### 拡張子が.tmpのファイルは無視する。
