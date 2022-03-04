@@ -367,7 +367,7 @@ alias -g T='| tail'
 alias -g S='| sed'
 
 ## 完全に削除。
-alias rr="command rm -rf"
+alias rrf="command rm -rf"
 ## ファイル操作を確認する。
 alias rm="rm -i"
 alias cp="cp -i"
