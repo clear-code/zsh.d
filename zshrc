@@ -451,7 +451,7 @@ update_title() {
 }
 ## X環境上でだけウィンドウタイトルを変える。
 if [ -n "$DISPLAY" ]; then
-    preexec_functions=($preexec_functions update_title)
+    precmd_functions=($precmd_functions update_title)
 fi
 
 # node.js
