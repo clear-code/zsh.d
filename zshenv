@@ -1,6 +1,6 @@
 # -*- mode: sh; indent-tabs-mode: nil -*-
 #
-# Copyright (C) 2011-2017  Kouhei Sutou <kou@clear-code.com>
+# Copyright (C) 2011-2025  Sutou Kouhei <kou@clear-code.com>
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -155,26 +155,6 @@ pkg_config_path=(# 既存のパスを優先
                  $HOME/local/lib/pkgconfig(N-/)
                  # MacPorts用
                  /opt/local/lib/pkgconfig(N-/))
-
-# ページャの設定
-if type lv > /dev/null 2>&1; then
-    ## lvを優先する。
-    export PAGER="lv"
-else
-    ## lvがなかったらlessを使う。
-    export PAGER="less"
-fi
-
-# lvの設定
-## -c: ANSIエスケープシーケンスの色付けなどを有効にする。
-## -l: 1行が長くと折り返されていても1行として扱う。
-##     （コピーしたときに余計な改行を入れない。）
-export LV="-c -l"
-
-if [ "$PAGER" != "lv" ]; then
-    ## lvがなくてもlvでページャーを起動する。
-    alias lv="$PAGER"
-fi
 
 # lessの設定
 ## -R: ANSIエスケープシーケンスのみ素通しする。
