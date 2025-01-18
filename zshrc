@@ -1,6 +1,6 @@
 # -*- mode: sh; indent-tabs-mode: nil -*-
 #
-# Copyright (C) 2011-2017  Kouhei Sutou <kou@clear-code.com>
+# Copyright (C) 2011-2025  Sutou Kouhei <kou@clear-code.com>
 # Copyright (C) 2014  Kosuke Asami
 #
 # This library is free software: you can redistribute it and/or modify
@@ -357,8 +357,8 @@ if type gsed > /dev/null 2>&1; then
 fi
 
 ## ページャーを使いやすくする。
-### grep -r def *.rb L -> grep -r def *.rb |& lv
-alias -g L="|& $PAGER"
+### grep -r def *.rb L -> grep -r def *.rb |& less
+alias -g L="|& ${PAGER:-less}"
 ## grepを使いやすくする。
 alias -g G='| grep --directories skip'
 ## 後はおまけ。
