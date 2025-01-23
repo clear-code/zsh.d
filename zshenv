@@ -158,8 +158,9 @@ pkg_config_path=(# 既存のパスを優先
 
 # lessの設定
 ## -R: ANSIエスケープシーケンスのみ素通しする。
+## -i: 大文字小文字を無視して検索する。
 ## 2012-09-04
-export LESS="-R"
+export LESS="-R -i"
 
 # エディタの設定
 ## vimを使う。
