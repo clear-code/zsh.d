@@ -217,6 +217,13 @@ update_prompt()
     if [ -n "$vcs_info_msg_0_" ]; then
         RPROMPT="${vcs_info_msg_0_}-${RPROMPT}"
     fi
+
+    ## Python / Conda 環境がアクティブなら右プロンプトに表示する。
+    if [ -n "$VIRTUAL_ENV" ]; then
+        RPROMPT="(%K{cyan}$(basename "$VIRTUAL_ENV")%k)-${RPROMPT}"
+    elif [ -n "$CONDA_DEFAULT_ENV" ]; then
+        RPROMPT="(%K{cyan}$CONDA_DEFAULT_ENV%k)-${RPROMPT}"
+    fi
 }
 
 ## コマンド実行前に呼び出されるフック。
