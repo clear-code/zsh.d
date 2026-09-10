@@ -392,6 +392,9 @@ case $(uname) in
         if [ -x "$(which gnuls)" ]; then
             alias ls="gnuls"
             alias la="ls -lhAF --color=auto"
+        elif [ -x "$(which gls)" ]; then
+            alias ls="gls"
+            alias la="ls -lhAF --color=auto"
         else
             alias la="ls -lhAFG"
         fi
